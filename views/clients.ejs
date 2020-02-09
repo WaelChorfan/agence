@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clients</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script>
+        function edit(obj) {
+            // console.log(JSON.stringify(obj));
+            document.getElementsByName('id')[0].value = obj['id']
+            document.getElementsByName('cin')[0].value = obj['cin']
+            document.getElementsByName('nom')[0].value = obj['nom']
+            document.getElementsByName('prenom')[0].value = obj['prenom']
+            document.getElementsByName('tel')[0].value = obj['tel']
+
+        }
+    </script>
+
+</head>
+
+<body>
+  
+      <% include nav %>
+      <!-- ---------------------- -->
+
+
+    <div class="container mt-4">
+        <h3 class="">Liste des Clients</h3>
+        <div class="row mb-2">
+            <form method="post" action="/clients/search">
+                <input type="text" placeholder="search.." name="search" />
+                <input type="submit" value="Go" class="btn btn-outline-warning">
+                <a href="/clients" class="btn btn-outline-secondary">Reset</a>
+
+            </form>
+        </div>
+
+        <div class="row">
+            <table id="tableListClients" class="table table-striped table-bordered">
+                <tr>
+                    <th>cin</th>
+                    <th>nom</th>
+                    <th>prenom</th>
+                    <th>tel</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+
+                <% for(var i=0; i<listLength; i++) {%>
+
+                <tr>
+
+                    <td>
+                        <%= list[i].cin%>
+                    </td>
+                    <td>
+                        <%= list[i].nom%>
+                    </td>
+                    <td>
+                        <%= list[i].prenom%>
+                    </td>
+                    <td>
+                        <%= list[i].tel%>
+                    </td>
+                    <td>
+                        <button onclick='edit( <%- JSON.stringify( list[i]) %>  ); return false;'
+                            class="btn btn-primary"> Edit</button>
+                    </td>
+                    <td>
+                        <form action="/clients/delete" method="post">
+                            <input hidden type="text" name="idValue" value="<%-list[i].id%>">
+                            </input>
+                            <input type="submit" value="Delete" class="btn btn-danger" />
+                        </form>
+
+                    </td>
+                </tr>
+
+                <% } %>
+                
+            </table>
+        </div>
+        <hr>
+
+        <div class="row">
+            <h3 class="mr-4">Formulaire Insertion</h3>
+            </br>
+            <form method="post" action="/clients/upsert">
+                <table id="tableInsertion" class="table table-striped table-bordered">
+                    <tr>
+                        <!-- <td>id </td> -->
+                        <td>CIN </td>
+                        <td>Nom </td>
+                        <td>Prenom </td>
+                        <td>Tel </td>
+                    </tr>
+                    <tr>
+                        <input type="text" name="id" hidden>
+                        <td> <input type="number" name="cin" required></td>
+                        <td> <input type="text" name="nom" required></td>
+                        <td> <input type="text" name="prenom" required></td>
+                        <td> <input type="number" name="tel"  required></td>
+                    </tr>
+                </table>
+                <input type="submit" value="submit" class="btn btn-success mr-2">
+                <input type="reset" value="reset" class="btn btn-secondary">
+            </form>
+        </div>
+</body>
+
+</html>
